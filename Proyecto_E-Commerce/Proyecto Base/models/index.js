@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(
-  process.env.DB_DATABASE, // Ej: hack_academy_db
+  process.env.DB_DATABASE, // Ej: ecommerce
   process.env.DB_USERNAME, // Ej: root
   process.env.DB_PASSWORD, // Ej: root
   {
@@ -13,11 +13,11 @@ const sequelize = new Sequelize(
 
 // Requerir todos los modelos:
 const User = require("./User");
-const Article = require("./Article");
+const Product = require("./Product");
 
 // Inicializar todos los modelos:
 User.initModel(sequelize);
-Article.initModel(sequelize);
+Product.initModel(sequelize);
 
 /*
  * Luego de definir los modelos, se pueden establecer relaciones entre los
@@ -27,8 +27,11 @@ Article.initModel(sequelize);
  * aquí abajo.
  */
 
+User.hasMany(Product, { as: "product", foreignKey: "userId", onDelete: "CASCADE" });
+Product.belongsTo(User, { as: "author", foreignKey: "userId" });
+
 module.exports = {
   sequelize,
   User,
-  Article,
+  Product,
 };
