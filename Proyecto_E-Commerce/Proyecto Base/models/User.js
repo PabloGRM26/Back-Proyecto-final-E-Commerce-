@@ -55,7 +55,7 @@ class User extends Model {
           type: DataTypes.STRING,
         },
         wishlist: {
-          type: DataTypes.ARRAY(DataTypes.BIGINT.UNSIGNED),
+          type: DataTypes.JSON,
         },
         email: {
           type: DataTypes.STRING,

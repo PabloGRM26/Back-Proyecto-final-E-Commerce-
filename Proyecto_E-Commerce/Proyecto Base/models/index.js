@@ -12,11 +12,12 @@ const sequelize = new Sequelize(
 );
 
 // Requerir todos los modelos:
-const User = require("./User");
+const { User, Admin } = require("./User");
 const Product = require("./Product");
 
 // Inicializar todos los modelos:
 User.initModel(sequelize);
+Admin.initModel(sequelize);
 Product.initModel(sequelize);
 
 /*
