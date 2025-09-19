@@ -2,17 +2,13 @@ const { Product } = require("../models");
 
 // Display a listing of the resource.
 async function index(req, res) {
-  const products = await Products.findAll({
-    include: [{ model: Products, as: "author", attributes: { exclude: ["password"] } }],
-  });
+  const products = await Product.findAll();
   res.json(products);
 }
 
 // Display the specified resource.
 async function show(req, res) {
-  const products = await Products.findByPk(req.params.id, {
-    include: [{ model: Products, as: "author", attributes: { exclude: ["password"] } }],
-  });
+  const products = await Product.findByPk(req.params.id);
   if (!products) {
     return res.status(404).json({ error: "Article not found" });
   }
@@ -22,10 +18,8 @@ async function show(req, res) {
 // Store a newly created resource in storage.
 async function store(req, res) {
   try {
-    const products = await Products.create(req.body);
-    const reloaded = await Products.findByPk(products.id, {
-      include: [{ model: Products, as: "author", attributes: { exclude: ["password"] } }],
-    });
+    const products = await Product.create(req.body);
+    const reloaded = await Product.findByPk(products.id);
     res.status(201).json(reloaded);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -35,12 +29,10 @@ async function store(req, res) {
 // Update the specified resource in storage.
 async function update(req, res) {
   try {
-    const products = await Products.findByPk(req.params.id);
+    const products = await Product.findByPk(req.params.id);
     if (!products) return res.status(404).json({ error: "Products not found" });
     await products.update(req.body);
-    const reloaded = await Products.findByPk(products.id, {
-      include: [{ model: Products, as: "author", attributes: { exclude: ["password"] } }],
-    });
+    const reloaded = await Product.findByPk(products.id);
     res.json(reloaded);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -49,7 +41,7 @@ async function update(req, res) {
 
 // Remove the specified resource from storage.
 async function destroy(req, res) {
-  const deleted = await Products.destroy({ where: { id: req.params.id } });
+  const deleted = await Product.destroy({ where: { id: req.params.id } });
   if (!deleted) {
     return res.status(404).json({ error: "Product not found" });
   }

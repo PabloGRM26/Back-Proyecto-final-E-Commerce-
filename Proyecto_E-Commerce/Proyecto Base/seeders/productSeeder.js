@@ -14,18 +14,23 @@
  */
 
 const faker = require("@faker-js/faker").fakerES;
-const { Article } = require("../models");
+const { Product } = require("../models");
 
 module.exports = async () => {
-  const articles = [];
+  const products = [];
 
   for (let i = 0; i < 500; i++) {
-    articles.push({
-      title: faker.lorem.sentence(5),
-      content: faker.lorem.paragraphs(),
+    products.push({
+      name: faker.lorem.sentence(5),
+      description: faker.lorem.paragraphs(),
+      price: faker.number.int({ min: 100, max: 5000 }),
+      stock: faker.number.int({ min: 10, max: 100 }),
+      category: faker.commerce.department(),
+      photo: faker.image.urlLoremFlickr({ category: "technics" }),
+      discount: faker.number.int({ min: 0, max: 90 }),
     });
   }
 
-  await Article.bulkCreate(articles);
-  console.log("[Database] Se corrió el seeder de Articles.");
+  await Product.bulkCreate(products);
+  console.log("[Database] Se corrió el seeder de Products.");
 };

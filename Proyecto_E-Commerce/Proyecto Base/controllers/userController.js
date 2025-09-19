@@ -19,7 +19,12 @@ async function show(req, res) {
 async function store(req, res) {
   try {
     if (!req.body.firstName && !req.body.lastName && !req.body.email && !req.body.password) {
-      return res.status(400).json({ error: "Faltan campos obligatorios" });
+      return res
+        .status(400)
+        .json({
+          error: "Faltan campos obligatorios",
+          fields: ["firstName", "lastName", "email", "password"],
+        });
     }
     const user = await User.create(req.body);
     const safe = user.toJSON();

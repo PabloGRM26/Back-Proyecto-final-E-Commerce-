@@ -12,7 +12,8 @@ const sequelize = new Sequelize(
 );
 
 // Requerir todos los modelos:
-const { User, Admin } = require("./User");
+const { User } = require("./User");
+const { Admin } = require("./Admin");
 const Product = require("./Product");
 
 // Inicializar todos los modelos:
@@ -34,5 +35,6 @@ Product.belongsTo(User, { as: "author", foreignKey: "userId" });
 module.exports = {
   sequelize,
   User,
+  Admin,
   Product,
 };
