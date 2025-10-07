@@ -17,7 +17,7 @@ exports.login = async (req, res) => {
   }
 
    // Buscar usuario en la "base de datos"
-  const user = fakeUserDB[email, hashedPassword];
+  const user = fakeUser[email, hashedPassword];
   if (!user) {
     return res.status(401).json({ error: "Usuario no encontrado" });
   }
