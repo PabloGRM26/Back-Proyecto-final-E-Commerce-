@@ -7,6 +7,7 @@ const userRoutes = require("./userRoutes");
 const productRoutes = require("./productRoutes");
 const adminRoutes = require("./adminRoutes");
 const authRoutes = require("./authRoutes");
+const chatRoutes = require("./chatRoutes");
 
 module.exports = (app) => {
   /*
@@ -23,4 +24,5 @@ module.exports = (app) => {
   app.use("/users", userRoutes);
   app.use("/products", productRoutes);
   app.use("/admin", adminRoutes);
+  app.use("/api", chatRoutes);
 };
