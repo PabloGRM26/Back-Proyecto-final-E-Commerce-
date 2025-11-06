@@ -17,18 +17,44 @@
 const faker = require("@faker-js/faker").fakerES;
 const { User } = require("../models");
 
+// Normaliza acentos/espacios y deja solo [a-z0-9], separando por puntos
+function slugify(value) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ".")
+    .replace(/^\.+|\.+$/g, "");
+}
+
 module.exports = async () => {
   const users = [];
+  const usedEmails = new Set();
 
   for (let i = 0; i < 100; i++) {
+    const firstname = faker.person.firstName();
+    const lastname = faker.person.lastName();
+
+    const baseLocal = slugify(`${firstname}.${lastname}`);
+    const domain = faker.internet.domainName();
+
+    let local = baseLocal;
+    let n = 1;
+    let email = `${local}@${domain}`;
+    while (usedEmails.has(email)) {
+      local = `${baseLocal}${n++}`;
+      email = `${local}@${domain}`;
+    }
+    usedEmails.add(email);
+
     users.push({
-      firstname: faker.person.firstName(),
-      lastname: faker.person.lastName(),
+      firstname,
+      lastname,
       password: faker.internet.password(),
       adress: faker.location.streetAddress(),
       telephone: faker.phone.imei(),
       wishlist: [],
-      email: faker.internet.email(),
+      email,
     });
   }
 

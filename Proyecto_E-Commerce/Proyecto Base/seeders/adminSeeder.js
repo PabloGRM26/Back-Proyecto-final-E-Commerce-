@@ -17,14 +17,39 @@
 const faker = require("@faker-js/faker").fakerES;
 const { Admin } = require("../models");
 
+// Normaliza acentos/espacios y deja solo [a-z0-9], separando por puntos
+function slugify(value) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ".")
+    .replace(/^\.+|\.+$/g, "");
+}
+
 module.exports = async () => {
   const admins = [];
+  const usedUsernames = new Set();
 
   for (let i = 0; i < 25; i++) {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+
+    const base = slugify(`${firstName}.${lastName}`);
+    let username = base;
+    let n = 1;
+    while (usedUsernames.has(username)) {
+      username = `${base}${n++}`;
+    }
+    usedUsernames.add(username);
+
+    const domain = faker.internet.domainName();
+    const email = `${username}@${domain}`;
+
     admins.push({
-      username: faker.internet.userName(),
+      username,
+      email,
       password: faker.internet.password(),
-      email: faker.internet.email(),
     });
   }
 

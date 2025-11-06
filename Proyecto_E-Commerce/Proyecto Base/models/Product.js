@@ -24,6 +24,9 @@ class Product extends Model {
         description: {
           type: DataTypes.TEXT,
         },
+        marca: {
+          type: DataTypes.TEXT,
+        },
         category: {
           type: DataTypes.STRING,
         },
