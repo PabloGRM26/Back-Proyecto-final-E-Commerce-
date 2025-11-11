@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 class Product extends Model {
   static initModel(sequelize) {
     Product.init(
-      {
+          {
         id: {
           type: DataTypes.BIGINT.UNSIGNED,
           primaryKey: true,
@@ -25,13 +25,22 @@ class Product extends Model {
           type: DataTypes.TEXT,
         },
         marca: {
-          type: DataTypes.TEXT,
+          type: DataTypes.STRING,
         },
         category: {
-          type: DataTypes.STRING,
+          type: DataTypes.STRING, // Ej: "Suplementos", "Proteinas", "Relax", etc.
+        },
+        subcategory: {
+          type: DataTypes.STRING, // Ej: "Creatina", "Whey protein", "Casuales", etc.
+        },
+        features: {
+          type: DataTypes.JSON, // Ej: ["Sin gluten", "Con sabor", "Impermeable"]
         },
         discount: {
           type: DataTypes.DECIMAL(5, 2),
+        },
+        brandLine: {
+          type: DataTypes.STRING, // Ej: "Eboost", "Kinetic", "Eudaimonia"
         },
       },
       {

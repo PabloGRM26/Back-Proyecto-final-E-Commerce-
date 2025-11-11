@@ -1,9 +1,35 @@
 const { Product } = require("../models");
+const { Op } = require("sequelize");
+
 
 // Display a listing of the resource.
 async function index(req, res) {
-  const products = await Product.findAll();
-  res.json(products);
+  try {
+    const where = {};
+
+    if (req.query.marca) {
+      where.marca = { [Op.like]: `%${req.query.marca}%` };
+    }
+    if (req.query.subcategoria) {
+      where.subcategoria = { [Op.like]: `%${req.query.subcategoria}%` };
+    }
+    if (req.query.category) {
+      where.category = { [Op.like]: `%${req.query.category}%` };
+    }
+    if (req.query.caracteristica) {
+      where.caracteristicas = { [Op.like]: `%${req.query.caracteristica}%` };
+    }
+    if (req.query.minPrice && req.query.maxPrice) {
+      where.price = {
+        [Op.between]: [req.query.minPrice, req.query.maxPrice],
+      };
+    }
+
+    const products = await Product.findAll({ where });
+    res.json(products);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 }
 
 // Display the specified resource.

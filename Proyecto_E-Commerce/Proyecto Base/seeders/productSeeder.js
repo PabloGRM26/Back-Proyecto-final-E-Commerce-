@@ -36,150 +36,273 @@ function flickr(tags, lockKey) {
 
 // Catálogo base: cada ítem define marca, categoría y plantillas coherentes
 const catalog = [
+  // ===========================
+  // 🔴 EBOOST
+  // ===========================
   {
     marca: "eboost",
     category: "suplementos nutricionales",
-    priceRange: [8000, 50000],
+    priceRange: [5000, 40000],
+    subcategories: [
+      "Proteínas",
+      "Creatina",
+      "BCAA",
+      "Pre-entreno",
+      "Aminoácidos",
+      "Vitaminas",
+      "Omega 3",
+      "Colágeno",
+      "Ganadores de peso",
+      "Energizantes",
+      "Barras energéticas",
+      "Multivitamínicos",
+    ],
+    features: ["Sin gluten", "Sin azúcar", "Con sabor", "Sin sabor", "Vegano"],
     templates: [
       {
         name: "Whey Protein 1kg",
-        description:
-          "Proteína de suero concentrada de rápida absorción. Ideal para recuperación y ganancia de masa magra.",
-        tags: ["protein", "supplement", "shake", "gym", "eboost"],
+        description: "Proteína de suero concentrada de rápida absorción.",
+        tags: ["protein", "gym", "eboost"],
       },
       {
         name: "Creatina Monohidratada 300g",
-        description:
-          "Creatina monohidratada micronizada para mejora del rendimiento y fuerza explosiva.",
-        tags: ["creatine", "supplement", "powder", "fitness", "eboost"],
+        description: "Creatina micronizada para mejora de rendimiento.",
+        tags: ["creatine", "eboost"],
       },
       {
         name: "BCAA 2:1:1 200 cápsulas",
-        description:
-          "Aminoácidos de cadena ramificada con ratio 2:1:1 para apoyar la síntesis proteica y la recuperación.",
-        tags: ["bcaa", "supplement", "capsules", "workout", "eboost"],
+        description: "Aminoácidos esenciales para la recuperación muscular.",
+        tags: ["bcaa", "eboost"],
       },
-    ],
-  },
-  {
-    marca: "eboost",
-    category: "suplementos vitaminicos",
-    priceRange: [3000, 20000],
-    templates: [
+      {
+        name: "Pre-entreno NitroX 300g",
+        description: "Fórmula con cafeína, beta-alanina y citrulina.",
+        tags: ["preworkout", "eboost"],
+      },
+      {
+        name: "Glutamina 500g",
+        description: "Apoya la recuperación y la función inmunológica.",
+        tags: ["glutamine", "eboost"],
+      },
+      {
+        name: "Omega 3 Ultra 1000mg",
+        description: "Aceite de pescado con alto contenido de EPA y DHA.",
+        tags: ["omega3", "eboost"],
+      },
+      {
+        name: "Colágeno Hidrolizado 300g",
+        description: "Favorece la salud articular y la elasticidad de la piel.",
+        tags: ["collagen", "eboost"],
+      },
+      {
+        name: "Ganador de Peso Mass Gainer 3kg",
+        description: "Suplemento hipercalórico con proteínas y carbohidratos.",
+        tags: ["gainer", "eboost"],
+      },
       {
         name: "Multivitamínico Diario",
-        description:
-          "Fórmula completa con vitaminas y minerales esenciales para la energía y el bienestar general.",
-        tags: ["vitamins", "multivitamin", "health", "wellness", "eboost"],
+        description: "Complejo vitamínico para energía y bienestar general.",
+        tags: ["vitamin", "eboost"],
       },
       {
         name: "Vitamina D3 2000 UI",
-        description:
-          "Vitamina D3 de alta potencia para soporte del sistema inmune y salud ósea.",
-        tags: ["vitamin-d", "health", "immunity", "eboost"],
+        description: "Soporte del sistema inmune y salud ósea.",
+        tags: ["vitamin-d", "eboost"],
       },
       {
-        name: "Omega-3 Ultra 1000mg",
-        description:
-          "Aceite de pescado purificado con alto contenido de EPA y DHA para salud cardiovascular.",
-        tags: ["omega3", "fish-oil", "heart", "health", "eboost"],
+        name: "Barras Energéticas Pack x6",
+        description: "Barritas con proteína vegetal y carbohidratos naturales.",
+        tags: ["bars", "eboost"],
+      },
+      {
+        name: "Cafeína Pura 200mg",
+        description: "Aumenta el estado de alerta y el rendimiento físico.",
+        tags: ["caffeine", "eboost"],
       },
     ],
   },
+
+  // ===========================
+  // 🟢 KINETIC
+  // ===========================
   {
     marca: "kinetic",
-    category: "equipo funcional",
-    priceRange: [15000, 120000],
+    category: "artículos deportivos",
+    priceRange: [8000, 120000],
+    subcategories: [
+      "Running",
+      "Crosstraining",
+      "Musculación",
+      "Ciclismo",
+      "Fútbol",
+      "Basketball",
+      "Tennis",
+      "Casuales",
+      "Entrenamiento funcional",
+      "Accesorios",
+      "Outdoor",
+      "Pilates",
+    ],
+    features: ["Impermeable", "Ligero", "Transpirable", "Antideslizante", "Flexible"],
     templates: [
       {
-        name: "Kettlebell 16kg",
-        description:
-          "Pesa rusa de hierro fundido con agarre ergonómico para entrenamientos de fuerza y potencia.",
-        tags: ["kettlebell", "functional", "gym", "kinetic"],
+        name: "Zapatillas Running Pro X",
+        description: "Calzado con amortiguación avanzada y suela ligera.",
+        tags: ["running", "shoes", "kinetic"],
+      },
+      {
+        name: "Mancuernas Ajustables 20kg",
+        description: "Sistema modular para entrenamientos de fuerza en casa.",
+        tags: ["dumbbells", "fitness", "kinetic"],
       },
       {
         name: "Bandas de Resistencia Set x5",
-        description:
-          "Set progresivo de bandas de látex con diferentes tensiones para movilidad y fuerza.",
-        tags: ["resistance-bands", "functional", "mobility", "kinetic"],
+        description: "Bandas con distintos niveles de tensión.",
+        tags: ["bands", "kinetic"],
       },
-      {
-        name: "TRX Entrenamiento en Suspensión",
-        description:
-          "Sistema de suspensión ajustable para entrenamientos de cuerpo completo en cualquier lugar.",
-        tags: ["trx", "suspension", "functional", "training", "kinetic"],
-      },
-    ],
-  },
-  {
-    marca: "kinetic",
-    category: "articulos deportivos",
-    priceRange: [8000, 60000],
-    templates: [
       {
         name: "Soga de Batalla 12m",
-        description:
-          "Battle rope de alta resistencia para trabajo metabólico y de fuerza del tren superior.",
-        tags: ["battle-rope", "fitness", "conditioning", "kinetic"],
+        description: "Ideal para entrenamientos funcionales de alta intensidad.",
+        tags: ["battle-rope", "fitness", "kinetic"],
       },
       {
         name: "Colchoneta Antideslizante Pro",
-        description:
-          "Mat de alta densidad con superficie antideslizante para yoga, pilates y funcional.",
-        tags: ["yoga-mat", "mat", "fitness", "kinetic"],
+        description: "Mat de yoga o pilates con alta densidad y confort.",
+        tags: ["mat", "yoga", "kinetic"],
       },
       {
         name: "Rueda Abdominal Pro",
-        description:
-          "Ab wheel con núcleo reforzado y empuñaduras cómodas para trabajo de core.",
-        tags: ["ab-wheel", "core", "fitness", "kinetic"],
+        description: "Fortalece el core con estabilidad y agarres ergonómicos.",
+        tags: ["ab-wheel", "core", "kinetic"],
+      },
+      {
+        name: "Guantes de Entrenamiento Premium",
+        description: "Protección y agarre superior para pesas o crossfit.",
+        tags: ["gloves", "training", "kinetic"],
+      },
+      {
+        name: "Botella Térmica 1L",
+        description: "Mantiene la bebida fría o caliente por más de 10 horas.",
+        tags: ["bottle", "gym", "kinetic"],
+      },
+      {
+        name: "Pelota de Pilates 65cm",
+        description: "Ideal para ejercicios de equilibrio y estabilidad.",
+        tags: ["pilates", "ball", "kinetic"],
+      },
+      {
+        name: "Cinta de Correr Plegable",
+        description: "Cinta motorizada con pantalla LED y control remoto.",
+        tags: ["treadmill", "running", "kinetic"],
+      },
+      {
+        name: "Smartwatch Deportivo K1",
+        description: "Monitoriza ritmo cardíaco, pasos y oxígeno.",
+        tags: ["smartwatch", "fitness", "kinetic"],
+      },
+      {
+        name: "Zapatillas Ciclismo RoadFit",
+        description: "Diseñadas para máximo rendimiento en ruta.",
+        tags: ["cycling", "shoes", "kinetic"],
       },
     ],
   },
+
+  // ===========================
+  // 🔵 EUDAIMONIA
+  // ===========================
   {
     marca: "eudaimonia",
-    category: "paquetes de viajes o actividades",
-    priceRange: [60000, 300000],
+    category: "paquetes de experiencias",
+    priceRange: [50000, 300000],
+    subcategories: [
+      "Viajes",
+      "Gastronomía",
+      "Estadías",
+      "Aventura",
+      "Cursos y talleres",
+      "Relax y cuidado",
+      "Naturaleza",
+      "Deportes acuáticos",
+      "Bienestar general",
+      "Sueño",
+      "Estrés",
+      "Cultura",
+    ],
+    features: [
+      "Con hospedaje",
+      "Todo incluido",
+      "Al aire libre",
+      "Con instructor",
+      "Ideal en pareja",
+      "Duración corta",
+      "Con transporte",
+    ],
     templates: [
       {
         name: "Trekking Andes 3 días",
-        description:
-          "Experiencia guiada de trekking por senderos andinos con alojamiento y pensión completa.",
-        tags: ["trekking", "mountains", "andes", "travel", "eudaimonia"],
+        description: "Excursión guiada por senderos andinos con alojamiento.",
+        tags: ["trekking", "mountains", "eudaimonia"],
       },
       {
         name: "Rafting Clase III",
-        description:
-          "Aventura de rafting en rápidos clase III con equipo y guías certificados.",
-        tags: ["rafting", "river", "adventure", "travel", "eudaimonia"],
+        description: "Aventura en rápidos con equipo e instructores certificados.",
+        tags: ["rafting", "adventure", "eudaimonia"],
       },
       {
         name: "Yoga Retreat Costa",
-        description:
-          "Retiro de yoga de fin de semana frente al mar con clases diarias y alimentación saludable.",
-        tags: ["yoga", "retreat", "beach", "wellness", "eudaimonia"],
+        description: "Fin de semana de yoga frente al mar con comidas saludables.",
+        tags: ["yoga", "relax", "eudaimonia"],
       },
       {
-        name: "Parapente Costero",
-        description:
-          "Vuelo en parapente biplaza a lo largo de la costa con instructores certificados. Incluye briefing de seguridad y todo el equipo.",
-        tags: ["paragliding", "adventure", "coast", "travel", "eudaimonia"],
+        name: "Curso de Cocina Mediterránea",
+        description: "Aprendé recetas clásicas con chef profesional.",
+        tags: ["cooking", "gastronomy", "eudaimonia"],
       },
       {
-        name: "Kayak en Lago Medio Día",
-        description:
-          "Remada guiada en lago de aguas calmas, ideal para principiantes. Incluye kayak, chaleco y refrigerio.",
-        tags: ["kayak", "lake", "adventure", "nature", "eudaimonia"],
+        name: "Masaje y Spa Urbano",
+        description: "Sesión relajante con aromaterapia y música ambiental.",
+        tags: ["spa", "relax", "eudaimonia"],
+      },
+      {
+        name: "Clases de Surf Nivel 1",
+        description: "Curso para principiantes con tabla incluida.",
+        tags: ["surf", "beach", "eudaimonia"],
+      },
+      {
+        name: "Taller de Fotografía de Paisajes",
+        description: "Curso práctico al aire libre con guía especializado.",
+        tags: ["photography", "nature", "eudaimonia"],
+      },
+      {
+        name: "Cata de Vinos Premium",
+        description: "Degustación con sommelier en bodega boutique.",
+        tags: ["wine", "gastronomy", "eudaimonia"],
       },
       {
         name: "Escalada en Roca Introductoria",
-        description:
-          "Jornada de iniciación a la escalada en roca con guías certificados, equipo incluido y rutas de baja dificultad.",
-        tags: ["climbing", "rock", "adventure", "outdoors", "eudaimonia"],
+        description: "Actividad guiada para principiantes con equipo completo.",
+        tags: ["climbing", "adventure", "eudaimonia"],
+      },
+      {
+        name: "Kayak en Lago Medio Día",
+        description: "Remada guiada en entorno natural con refrigerio.",
+        tags: ["kayak", "nature", "eudaimonia"],
+      },
+      {
+        name: "Estadía Rural 2 noches",
+        description: "Descanso en posada con actividades de campo.",
+        tags: ["farm", "relax", "eudaimonia"],
+      },
+      {
+        name: "Vuelo en Parapente",
+        description: "Experiencia aérea en costa o montaña con piloto experto.",
+        tags: ["paragliding", "adventure", "eudaimonia"],
       },
     ],
   },
 ];
+
 
 function pick(arr) {
   return arr[int(0, arr.length - 1)];
@@ -196,26 +319,34 @@ module.exports = async () => {
   );
 
   while (products.length < COUNT) {
-    const tmpl = pick(templatesFlat);
-    const lock = lockFromName(tmpl.name);
-    const [minP, maxP] = tmpl.priceRange;
+  const tmpl = pick(templatesFlat);
+  const lock = lockFromName(tmpl.name);
+  const [minP, maxP] = tmpl.priceRange;
 
-    const product = {
-      name: tmpl.name,
-      description: tmpl.description,
-      price: price(minP, maxP),
-      stock:
-        tmpl.category === "paquetes de viajes o actividades"
-          ? int(0, 20)
-          : int(5, 100),
-      category: tmpl.category,
-      marca: tmpl.marca,
-      photo: flickr(tmpl.tags, lock),
-      discount: int(0, 40),
-    };
+  const brandLine = tmpl.marca.toLowerCase(); // "eboost", "kinetic" o "eudaimonia"
+  const catalogEntry = catalog.find((c) => c.marca === tmpl.marca);
 
-    products.push(product);
-  }
+  const product = {
+    name: tmpl.name,
+    description: tmpl.description,
+    price: price(minP, maxP),
+    stock:
+      tmpl.category === "paquetes de viajes o actividades"
+        ? int(0, 20)
+        : int(5, 100),
+    category: tmpl.category,
+    marca: tmpl.marca,
+    photo: flickr(tmpl.tags, lock),
+    discount: int(0, 40),
+
+    // 🔹 NUEVOS CAMPOS
+    subcategory: pick(catalogEntry.subcategories),
+    features: faker.helpers.arrayElements(catalogEntry.features, int(1, 3)),
+    brandLine: tmpl.marca.toLowerCase(),
+  };
+
+  products.push(product);
+}
 
   await Product.bulkCreate(products);
   console.log(`[Database] Se corrió el seeder de Products. Total: ${products.length}`);
