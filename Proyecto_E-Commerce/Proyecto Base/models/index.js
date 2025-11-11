@@ -1,14 +1,17 @@
 const { Sequelize } = require("sequelize");
+require("dotenv").config();
+
+// Configurar la conexión a la base de datos:
 
 const sequelize = new Sequelize(
   process.env.DB_DATABASE, // Ej: ecommerce
   process.env.DB_USERNAME, // Ej: root
   process.env.DB_PASSWORD, // Ej: root
   {
-    host: process.env.DB_HOST, // Ej: 127.0.0.1
-    dialect: process.env.DB_CONNECTION, // Ej: mysql
-    logging: false, // Para que no aparezcan mensajes en consola.
-  },
+    host: process.env.DB_HOST || "localhost",
+    dialect: process.env.DB_CONNECTION || "mysql", // postgres | mysql | sqlite | mssql
+    logging: false,
+  }
 );
 
 // Requerir todos los modelos:
