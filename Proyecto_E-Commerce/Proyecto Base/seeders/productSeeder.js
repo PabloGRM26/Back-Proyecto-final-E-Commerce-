@@ -42,7 +42,7 @@ const catalog = [
   {
     marca: "eboost",
     category: "suplementos nutricionales",
-    priceRange: [5000, 40000],
+    priceRange: [2000, 8000],
     subcategories: [
       "Proteínas",
       "Creatina",
@@ -128,7 +128,7 @@ const catalog = [
   {
     marca: "kinetic",
     category: "artículos deportivos",
-    priceRange: [8000, 120000],
+    priceRange: [2000, 8000],
     subcategories: [
       "Running",
       "Crosstraining",
@@ -214,7 +214,7 @@ const catalog = [
   {
     marca: "eudaimonia",
     category: "paquetes de experiencias",
-    priceRange: [50000, 300000],
+    priceRange: [2000, 8000],
     subcategories: [
       "Viajes",
       "Gastronomía",
@@ -303,7 +303,6 @@ const catalog = [
   },
 ];
 
-
 function pick(arr) {
   return arr[int(0, arr.length - 1)];
 }
@@ -311,42 +310,44 @@ function pick(arr) {
 module.exports = async () => {
   const products = [];
 
-  // Permite controlar cuántos productos generar (por env), por defecto 60
-  const COUNT = Number(process.env.SEED_PRODUCTS_COUNT || 60);
+  // Permite controlar cuántos productos generar (por env), por defecto 12
+  const COUNT = Number(process.env.SEED_PRODUCTS_COUNT || 36);
 
   const templatesFlat = catalog.flatMap((c) =>
-    c.templates.map((t) => ({ ...t, marca: c.marca, category: c.category, priceRange: c.priceRange })),
+    c.templates.map((t) => ({
+      ...t,
+      marca: c.marca,
+      category: c.category,
+      priceRange: c.priceRange,
+    })),
   );
 
   while (products.length < COUNT) {
-  const tmpl = pick(templatesFlat);
-  const lock = lockFromName(tmpl.name);
-  const [minP, maxP] = tmpl.priceRange;
+    const tmpl = pick(templatesFlat);
+    const lock = lockFromName(tmpl.name);
+    const [minP, maxP] = tmpl.priceRange;
 
-  const brandLine = tmpl.marca.toLowerCase(); // "eboost", "kinetic" o "eudaimonia"
-  const catalogEntry = catalog.find((c) => c.marca === tmpl.marca);
+    const brandLine = tmpl.marca.toLowerCase(); // "eboost", "kinetic" o "eudaimonia"
+    const catalogEntry = catalog.find((c) => c.marca === tmpl.marca);
 
-  const product = {
-    name: tmpl.name,
-    description: tmpl.description,
-    price: price(minP, maxP),
-    stock:
-      tmpl.category === "paquetes de viajes o actividades"
-        ? int(0, 20)
-        : int(5, 100),
-    category: tmpl.category,
-    marca: tmpl.marca,
-    photo: flickr(tmpl.tags, lock),
-    discount: int(0, 40),
+    const product = {
+      name: tmpl.name,
+      description: tmpl.description,
+      price: price(minP, maxP),
+      stock: tmpl.category === "paquetes de viajes o actividades" ? int(0, 20) : int(5, 100),
+      category: tmpl.category,
+      marca: tmpl.marca,
+      photo: flickr(tmpl.tags, lock),
+      discount: int(0, 40),
 
-    // 🔹 NUEVOS CAMPOS
-    subcategory: pick(catalogEntry.subcategories),
-    features: faker.helpers.arrayElements(catalogEntry.features, int(1, 3)),
-    brandLine: tmpl.marca.toLowerCase(),
-  };
+      // 🔹 NUEVOS CAMPOS
+      subcategory: pick(catalogEntry.subcategories),
+      features: faker.helpers.arrayElements(catalogEntry.features, int(1, 3)),
+      brandLine: tmpl.marca.toLowerCase(),
+    };
 
-  products.push(product);
-}
+    products.push(product);
+  }
 
   await Product.bulkCreate(products);
   console.log(`[Database] Se corrió el seeder de Products. Total: ${products.length}`);

@@ -9,6 +9,10 @@ class Orders extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
+        orderNumber: {
+          type: DataTypes.STRING,
+          unique: true,
+        },
         description: {
           type: DataTypes.TEXT,
         },

@@ -31,11 +31,12 @@ module.exports = async () => {
   const admins = [];
   const usedUsernames = new Set();
 
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 5; i++) {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
 
     const base = slugify(`${firstName}.${lastName}`);
+
     let username = base;
     let n = 1;
     while (usedUsernames.has(username)) {
@@ -43,13 +44,15 @@ module.exports = async () => {
     }
     usedUsernames.add(username);
 
-    const domain = faker.internet.domainName();
+    const domain = "gmail.com";
     const email = `${username}@${domain}`;
 
     admins.push({
       username,
       email,
       password: faker.internet.password(),
+      avatar:
+        "C:/Users/Alumno/Documents/Back-Proyecto-final-E-Commerce-/Proyecto_E-Commerce/Proyecto Base/public/images/admins/default-admin-avatar.png",
     });
   }
 

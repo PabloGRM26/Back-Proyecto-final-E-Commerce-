@@ -31,12 +31,12 @@ module.exports = async () => {
   const users = [];
   const usedEmails = new Set();
 
-  for (let i = 0; i < 100; i++) {
-    const firstname = faker.person.firstName();
-    const lastname = faker.person.lastName();
+  for (let i = 0; i < 10; i++) {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
 
-    const baseLocal = slugify(`${firstname}.${lastname}`);
-    const domain = faker.internet.domainName();
+    const baseLocal = slugify(`${firstName}.${lastName}`);
+    const domain = "gmail.com";
 
     let local = baseLocal;
     let n = 1;
@@ -48,13 +48,15 @@ module.exports = async () => {
     usedEmails.add(email);
 
     users.push({
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       password: faker.internet.password(),
       adress: faker.location.streetAddress(),
       telephone: faker.phone.imei(),
       wishlist: [],
       email,
+      avatar:
+        "C:/Users/Alumno/Documents/Back-Proyecto-final-E-Commerce-/Proyecto_E-Commerce/Proyecto Base/public/images/users/default-user-avatar.png",
     });
   }
 

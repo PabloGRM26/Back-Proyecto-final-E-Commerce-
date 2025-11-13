@@ -31,6 +31,10 @@ class User extends Model {
           type: DataTypes.STRING,
           unique: true,
         },
+        avatar: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
       },
       {
         sequelize,

@@ -20,6 +20,10 @@ class Admin extends Model {
         password: {
           type: DataTypes.STRING,
         },
+        avatar: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
       },
       {
         sequelize,
