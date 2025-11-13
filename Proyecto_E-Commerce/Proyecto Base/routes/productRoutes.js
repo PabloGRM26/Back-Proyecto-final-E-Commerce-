@@ -9,6 +9,7 @@ const productController = require("../controllers/productController");
  * tal como se definió en el archivo `routes/index.js`.
  */
 
+router.get("/filter/:marca", productController.getFilters);
 router.get("/", productController.index);
 router.post("/", productController.store);
 router.get("/:id", productController.show);

@@ -1,7 +1,6 @@
 const { Product } = require("../models");
 const { Op } = require("sequelize");
 
-
 // Display a listing of the resource.
 async function index(req, res) {
   try {
@@ -74,6 +73,61 @@ async function destroy(req, res) {
   res.status(204).send();
 }
 
+async function getFilters(req, res) {
+  try {
+    const { marca } = req.params;
+
+    const products = await Product.findAll({
+      where: { marca },
+      attributes: ["category", "subcategory", "marca", "features", "price"],
+    });
+
+    // --- CATEGORÍAS ---
+    const categoryMap = {};
+    for (const p of products) {
+      const cat = p.category?.trim();
+      const sub = p.subcategory?.trim();
+      if (!cat) continue;
+      if (!categoryMap[cat]) categoryMap[cat] = new Set();
+      if (sub) categoryMap[cat].add(sub);
+    }
+
+    const categories = Object.entries(categoryMap).map(([name, subs]) => ({
+      name,
+      subcategories: Array.from(subs),
+    }));
+
+    // --- FEATURES (como array de strings) ---
+    const featureSet = new Set();
+    for (const p of products) {
+      if (Array.isArray(p.features)) {
+        p.features.forEach((f) => featureSet.add(f));
+      } else if (typeof p.features === "string") {
+        featureSet.add(p.features);
+      }
+    }
+
+    const features = {
+      marca: [...new Set(products.map((p) => p.marca).filter(Boolean))],
+      caracteristicas: Array.from(featureSet),
+    };
+
+    // --- RANGO DE PRECIOS ---
+    const prices = products.map((p) => p.price).filter((n) => typeof n === "number");
+    const min = prices.length ? Math.min(...prices) : null;
+    const max = prices.length ? Math.max(...prices) : null;
+
+    res.json({
+      categories,
+      features,
+      priceRange: { min, max },
+    });
+  } catch (error) {
+    console.error("Error en getFilters:", error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // Otros handlers...
 // ...
 
@@ -83,4 +137,5 @@ module.exports = {
   store,
   update,
   destroy,
+  getFilters,
 };
