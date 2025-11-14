@@ -1,36 +1,37 @@
-const jwt = require("jsonwebtoken");
+const db = require("../models");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-exports.login = async (req, res) => {
-  // Fake BD
-  const fakeUser = {
-    email: "usuario@example.com",
-  };
-  fakeUser.hashedPassword = await bcrypt.hash("1234", 10);
-  //
-  const { email, password } = req.body;
-  //User.findOne({ where: { email } });
-  //  Aquí se valida el usuario en la BD (simplificado)
-  if (!email || !password) {
-    return res.status(401).json({ error: "Credenciales requeridas" });
+module.exports = {
+  login: async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+      const user = await db.User.findOne({ where: { email } });
+
+      if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+      const isMatch = bcrypt.compareSync(password, user.password);
+      if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
+
+      const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+      );
+
+      return res.json({
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role
+        }
+      });
+
+    } catch (err) {
+      return res.status(500).json({ message: "Error interno", error: err });
+    }
   }
-
-  // // Buscar usuario en la "base de datos"
-  // const user = fakeUser[(email, hashedPassword)];
-  // if (!user) {
-  //   return res.status(401).json({ error: "Usuario no encontrado" });
-  // }
-
-  // Comparar contraseña ingresada con el hash almacenado
-  const match = await bcrypt.compare(password, fakeUser.hashedPassword);
-  if (!match) {
-    return res.status(401).json({ error: "Credenciales Invalidas" });
-  }
-
-  // Crear el token si la contraseña es válida
-  const token = jwt.sign({ email: fakeUser.email }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
-
-  res.json({ token });
 };

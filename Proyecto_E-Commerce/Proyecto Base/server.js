@@ -3,21 +3,20 @@ const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const routes = require("./routes");
-
+const authRoutes = require("./routes/authRoutes");
 const APP_PORT = process.env.APP_PORT || 3000;
 const app = express();
 
 // 🟢 CORS: permitimos al front conectarse
-app.use(
-  cors({
-    origin: "http://localhost:5173", // dirección del frontend (Vite)
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  }),
-);
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(express.static("public"));
+app.use("/auth", authRoutes);
 
 routes(app);
 
