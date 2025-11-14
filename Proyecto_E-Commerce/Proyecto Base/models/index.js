@@ -1,39 +1,39 @@
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
 
-// Configurar la conexión a la base de datos:
-
+// Configuración DB
 const sequelize = new Sequelize(
-  process.env.DB_DATABASE, // Ej: ecommerce
-  process.env.DB_USERNAME, // Ej: root
-  process.env.DB_PASSWORD, // Ej: root
+  process.env.DB_DATABASE,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST || "localhost",
-    dialect: process.env.DB_CONNECTION || "mysql", // postgres | mysql | sqlite | mssql
+    dialect: process.env.DB_CONNECTION || "mysql",
     logging: false,
   }
 );
 
-// Requerir todos los modelos:
+// Importar modelos correctamente
 const { User } = require("./User");
 const { Admin } = require("./Admin");
-const Product = require("./Product");
+const { Product } = require("./Product");
 
-// Inicializar todos los modelos:
+// Inicializar modelos
 User.initModel(sequelize);
 Admin.initModel(sequelize);
 Product.initModel(sequelize);
 
-/*
- * Luego de definir los modelos, se pueden establecer relaciones entre los
- * mismos (usando métodos como belongsTo, hasMany y belongsToMany)...
- *
- * Por ejemplo, si un User está relacionado con un Article, establecerlo
- * aquí abajo.
- */
+// Relaciones
+User.hasMany(Product, {
+  as: "products",
+  foreignKey: "userId",
+  onDelete: "CASCADE",
+});
 
-User.hasMany(Product, { as: "product", foreignKey: "userId", onDelete: "CASCADE" });
-Product.belongsTo(User, { as: "author", foreignKey: "userId" });
+Product.belongsTo(User, {
+  as: "author",
+  foreignKey: "userId",
+});
 
 module.exports = {
   sequelize,
