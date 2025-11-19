@@ -23,7 +23,7 @@ module.exports = {
         adress,
         avatar: "C:/Users/Alumno/Documents/Back-Proyecto-final-E-Commerce-/Proyecto_E-Commerce/Proyecto Base/public/images/users/default-user-avatar.png",
         role: "user",
-        wishlist: "[]"
+        wishlist: [],
       });
 
       res.status(201).json({
@@ -58,18 +58,71 @@ module.exports = {
         { expiresIn: process.env.JWT_EXPIRES_IN }
       );
 
+
       return res.json({
         token,
         user: {
           id: user.id,
           email: user.email,
-          name: user.nombre,
+          name: user.firstName,
           role: user.role
         }
       });
 
     } catch (err) {
       res.status(500).json({ message: "Error interno", error: err });
+    }
+  },
+
+  me: async (req, res) => {
+    try {
+      const token = req.headers.authorization?.split(" ")[1];
+
+      if (!token) return res.status(401).json({ message: "Token faltante" });
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      const user = await db.User.findByPk(decoded.id);
+
+      if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+      // Cálculo del IMC
+      let IMC = null;
+      if (user.weight && user.height) {
+        const heightMeters = user.height / 100; // si lo guardás en cm
+        IMC = (user.weight / (heightMeters * heightMeters)).toFixed(2);
+      }
+
+      // Cálculo tasa metabólica basal (Harris-Benedict, hombre)
+      let basalMetabolicRate = null;
+      if (user.weight && user.height && user.birthdate) {
+        const age = new Date().getFullYear() - new Date(user.birthdate).getFullYear();
+
+        basalMetabolicRate = Math.round(
+          88.362 + 
+          (13.397 * user.weight) + 
+          (4.799 * user.height) - 
+          (5.677 * age)
+        );
+      }
+
+      return res.json({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        birthdate: user.birthdate,
+        adress: user.adress,
+        telephone: user.telephone,
+        planType: user.planType,
+        weight: user.weight,
+        height: user.height,
+        IMC,
+        basalMetabolicRate
+      });
+
+    } catch (err) {
+      console.error(err); // <-- MOSTRÁ EL ERROR REAL
+      return res.status(500).json({ message: "Error interno", error: err });
     }
   }
 };

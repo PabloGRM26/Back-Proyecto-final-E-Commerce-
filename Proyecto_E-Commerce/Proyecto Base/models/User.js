@@ -35,6 +35,35 @@ class User extends Model {
           type: DataTypes.STRING,
           allowNull: true,
         },
+        role: {
+          type: DataTypes.STRING,
+          defaultValue: "user",
+        },
+        birthdate: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        },
+        weight: {
+          type: DataTypes.FLOAT,
+          allowNull: true,
+        },
+        height: {
+          type: DataTypes.FLOAT,
+          allowNull: true,
+        },
+        IMC: {
+          type: DataTypes.FLOAT,
+          allowNull: true,
+        },
+        basalMetabolicRate: {
+          type: DataTypes.FLOAT,
+          allowNull: true,
+        },
+        planType: {
+          type: DataTypes.STRING,
+          allowNull: true,
+          defaultValue: "Gratis",
+        },
       },
       {
         sequelize,

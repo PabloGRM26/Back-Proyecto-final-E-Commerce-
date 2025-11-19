@@ -1,5 +1,6 @@
 const { Product } = require("../models");
 const { Op } = require("sequelize");
+const { get } = require("../routes/authRoutes");
 
 // Display a listing of the resource.
 async function index(req, res) {
@@ -128,6 +129,14 @@ async function getFilters(req, res) {
   }
 }
 
+async function getProductsByCategory(category) {
+  return await Product.findAll({
+    where: { category }, // asumiendo que tu tabla tiene campo category
+    attributes: ["id", "name", "price", "description", "stock"], // lo que quieras mostrar
+  });
+}
+
+
 // Otros handlers...
 // ...
 
@@ -138,4 +147,5 @@ module.exports = {
   update,
   destroy,
   getFilters,
+  getProductsByCategory
 };
