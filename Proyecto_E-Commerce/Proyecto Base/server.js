@@ -9,7 +9,7 @@ const app = express();
 
 // 🟢 CORS: permitimos al front conectarse
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "http://localhost:5174",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
