@@ -8,11 +8,13 @@ const APP_PORT = process.env.APP_PORT || 3000;
 const app = express();
 
 // 🟢 CORS: permitimos al front conectarse
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 app.use(express.static("public"));

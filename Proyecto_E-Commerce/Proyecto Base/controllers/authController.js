@@ -58,6 +58,21 @@ module.exports = {
         { expiresIn: process.env.JWT_EXPIRES_IN },
       );
 
+      // 🔹 Si el role es admin, redireccionar al dashboard de admin
+      if (user.role === "admin") {
+        return res.json({
+          token,
+          user: {
+            id: user.id,
+            email: user.email,
+            name: user.firstName,
+            role: user.role,
+          },
+          redirectTo: "http://localhost:5173/admin/dashboard",
+        });
+      }
+
+      // 🔹 Login normal para usuarios
       return res.json({
         token,
         user: {
@@ -66,6 +81,7 @@ module.exports = {
           name: user.firstName,
           role: user.role,
         },
+        redirectTo: "/",
       });
     } catch (err) {
       res.status(500).json({ message: "Error interno", error: err });
