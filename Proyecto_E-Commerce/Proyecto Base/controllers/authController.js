@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
   register: async (req, res) => {
-    const { firstName, lastName, email, password, telephone, adress, avatar, wishlist } = req.body;
+    const { firstName, lastName, email, password, telephone, adress, avatar, wishlist} = req.body;
 
     try {
       const exists = await db.User.findOne({ where: { email } });
@@ -21,8 +21,7 @@ module.exports = {
         password: hashedPassword,
         telephone,
         adress,
-        avatar:
-          "C:/Users/Alumno/Documents/Back-Proyecto-final-E-Commerce-/Proyecto_E-Commerce/Proyecto Base/public/images/users/default-user-avatar.png",
+        avatar: "C:/Users/Alumno/Documents/Back-Proyecto-final-E-Commerce-/Proyecto_E-Commerce/Proyecto Base/public/images/users/default-user-avatar.png",
         role: "user",
         wishlist: [],
       });
@@ -32,13 +31,14 @@ module.exports = {
         user: {
           id: newUser.id,
           email: newUser.email,
-          firstName: newUser.firstName,
-        },
+          firstName: newUser.firstName
+        }
       });
+
     } catch (err) {
-      console.error(" Error en login:", err);
-      return res.status(500).json({ message: "Error interno", error: err });
-    }
+      console.error(" Error en login:", err); 
+       return res.status(500).json({ message: "Error interno", error: err });
+        }
   },
 
   login: async (req, res) => {
@@ -55,8 +55,9 @@ module.exports = {
       const token = jwt.sign(
         { id: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN },
+        { expiresIn: process.env.JWT_EXPIRES_IN }
       );
+
 
       return res.json({
         token,
@@ -64,41 +65,10 @@ module.exports = {
           id: user.id,
           email: user.email,
           name: user.firstName,
-          role: user.role,
-        },
+          role: user.role
+        }
       });
-    } catch (err) {
-      res.status(500).json({ message: "Error interno", error: err });
-    }
-  },
 
-  // 🔹 LOGIN PARA ADMIN
-  adminLogin: async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-      const admin = await db.Admin.findOne({ where: { email } });
-
-      if (!admin) return res.status(404).json({ message: "Admin no encontrado" });
-
-      const isMatch = bcrypt.compareSync(password, admin.password);
-      if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
-
-      const token = jwt.sign(
-        { id: admin.id, email: admin.email, role: "admin" },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN },
-      );
-
-      return res.json({
-        token,
-        user: {
-          id: admin.id,
-          email: admin.email,
-          username: admin.username,
-          role: "admin",
-        },
-      });
     } catch (err) {
       res.status(500).json({ message: "Error interno", error: err });
     }
@@ -129,7 +99,10 @@ module.exports = {
         const age = new Date().getFullYear() - new Date(user.birthdate).getFullYear();
 
         basalMetabolicRate = Math.round(
-          88.362 + 13.397 * user.weight + 4.799 * user.height - 5.677 * age,
+          88.362 + 
+          (13.397 * user.weight) + 
+          (4.799 * user.height) - 
+          (5.677 * age)
         );
       }
 
@@ -144,11 +117,12 @@ module.exports = {
         weight: user.weight,
         height: user.height,
         IMC,
-        basalMetabolicRate,
+        basalMetabolicRate
       });
+
     } catch (err) {
-      console.error(err);
+      console.error(err); // <-- MOSTRÁ EL ERROR REAL
       return res.status(500).json({ message: "Error interno", error: err });
     }
-  },
+  }
 };
