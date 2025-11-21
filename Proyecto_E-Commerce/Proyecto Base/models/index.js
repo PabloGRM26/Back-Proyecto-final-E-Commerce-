@@ -1,7 +1,7 @@
-const { Sequelize } = require("sequelize");
 require("dotenv").config();
+const { Sequelize, DataTypes } = require("sequelize");
 
-// Configuración DB
+// 1️⃣ Inicializar conexión
 const sequelize = new Sequelize(
   process.env.DB_DATABASE,
   process.env.DB_USERNAME,
@@ -13,31 +13,38 @@ const sequelize = new Sequelize(
   }
 );
 
-// Importar modelos correctamente
+// 2️⃣ Importar clases de modelos
 const { User } = require("./User");
 const { Admin } = require("./Admin");
 const { Product } = require("./Product");
+const { Cart } = require("./Carrito");
 
-// Inicializar modelos
+// 3️⃣ Inicializar modelos
 User.initModel(sequelize);
 Admin.initModel(sequelize);
 Product.initModel(sequelize);
+Cart.initModel(sequelize);
 
-// Relaciones
-User.hasMany(Product, {
-  as: "products",
-  foreignKey: "userId",
-  onDelete: "CASCADE",
-});
+// 4️⃣ Relaciones
 
-Product.belongsTo(User, {
-  as: "author",
-  foreignKey: "userId",
-});
+// Usuario → Productos
+User.hasMany(Product, { foreignKey: "userId" });
+Product.belongsTo(User, { foreignKey: "userId" });
 
+// Usuario → Carrito
+User.hasMany(Cart, { foreignKey: "userId" });
+Cart.belongsTo(User, { foreignKey: "userId" });
+
+// Producto → Carrito
+Product.hasMany(Cart, { foreignKey: "productId" });
+Cart.belongsTo(Product, { foreignKey: "productId" });
+
+// 5️⃣ Export
 module.exports = {
   sequelize,
+  Sequelize,
   User,
   Admin,
   Product,
+  Cart,
 };

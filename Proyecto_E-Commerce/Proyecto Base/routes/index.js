@@ -24,5 +24,5 @@ module.exports = (app) => {
   app.use("/users", userRoutes);
   app.use("/products", productRoutes);
   app.use("/admin", adminRoutes);
-  app.use("/api", chatRoutes);
+  app.use("/api", chatRoutes, require("./cartRoutes"));
 };
